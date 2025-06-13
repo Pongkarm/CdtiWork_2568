@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องคิดเลข</title>
+    <style scr="calculator.css">
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>เครื่องคิดเลข</h2>
+        <input type="number" id="num1" placeholder="ตัวเลขที่ 1">
+        <input type="number" id="num2" placeholder="ตัวเลขที่ 2">
+        <div>
+            <button onclick="calculate('+')">+</button>
+            <button onclick="calculate('-')">-</button>
+            <button onclick="calculate('*')">×</button>
+            <button onclick="calculate('/')">÷</button>
+        </div>
+        <div id="result">ผลลัพธ์: </div>
+    </div>
+</body>
+<script src="calculator.js"></script>
+</html >

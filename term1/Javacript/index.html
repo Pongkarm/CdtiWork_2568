@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test javascript</title>
+</head>
+
+<body>
+    <h1>โปรแกรมท้ายหัวก้อย</h1>
+    <p id="result"></p>
+</body>
+<script>
+    let time = prompt('ใส่จำนวนที่ต้องการเล่นเลย!!!')
+    for (let i = 1; i < time; i++) {
+        let user = prompt('ท้ายว่าหัวหรือก้อย')
+        let computer = Math.random() > 0.5 ? 'หัว' : 'ก้อย'
+        if (user == computer) {
+            alert('ยินดีด้วย คุณท้ายถูก')
+            document.getElementById('result').innerHTML += i + 'ท้าย' + user + ' ออก ' + computer + '  ถูก' + '<br>'
+        }
+        else {
+            alert('เสียใจด้วย คุณท้ายผิด')
+            document.getElementById('result').innerHTML += i + 'ท้าย' + user + ' ออก ' + computer + '  ผิด' + '<br>'
+        }
+    }
+</script>
+
+</html>
