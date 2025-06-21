@@ -1,46 +1,36 @@
-# a = "pop"
+# x = 0
+# y = 0
+# z = 0
 
-# print(a[::-1])
-
-
-
-# import random
-
-# def count_consecutive_ones(target=5):
-#     count = 0
-#     attempts = 0
-
-#     while True:
-#         a = random.randint(0, 1)
-#         print(a)
-#         if a == 1:
-#             count += 1
-#             if count == target:
-#                 break
-#         else:
-#             count = 0
-#             attempts += 1
-
-#     return attempts
-
-# attempts = count_consecutive_ones(10)
-# print("Number of attempts before 5 consecutive 1s:", attempts)
-
-# #write information at file a.txt
-# with open('a.txt', 'a') as f:
-#     f.write('Number of attempts before 5 consecutive 1s: '+ str(attempts)+"\n")
+# for i in range(100):
+#     if z == 2:
+#         y += 1
+#         z = 0
+#         if y == 2:
+#             x += 1
+#             y = 0
+#     if x == 2:
+#         break
+#     print(x, y, z)
+#     z += 1
+        
 
 
-t = 100
-sum = 0
-count = 0
-for i in range(t):
-    sum += 1
-    if '9' in '{:02d}'.format(i) or '4' in '{:02d}'.format(i) or '6' in '{:02d}'.format(i):
-        continue
-    print(i)
-    count += 1
-print(count)
 
-# a = '{:02d}'.format(1)
-# print(type(a))
+for x in range(2):
+    for y in range(2):
+        for z in range(2):
+            print(x, y, z)
+            print(not(not(x) or (x and y and z)))
+            print(not(not((x or y) and (x and y and z))))
+def generator_range(n):
+    for i in range(n):
+        yield i  # คืนทีละตัว
+
+for num in generator_range(5):
+    print(num)
+# 0
+# 1
+# 2
+# 3
+# 4
