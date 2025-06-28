@@ -1,33 +1,61 @@
+# === smart_map_game.py ===
 import random
 import time
+from collections import deque
+
+random.seed(100)
 
 ROWS = 7
-COLS = 30
+COLS = 20
 
-# ตัวแทนสัญลักษณ์
 EMPTY = '.'
 WALL = '#'
 CAT = 'C'
 DOG = 'D'
 GOAL = 'G'
 
-# ทิศทาง: 1=บน, 2=ล่าง, 3=ซ้าย, 4=ขว
 dx = [0, -1, 1, 0, 0]
 dy = [0, 0, 0, -1, 1]
 
-# ตำแหน่งเริ่มต้น
 catX, catY = 0, 0
-dogX, dogY = ROWS - 1, 0
-goalX, goalY = ROWS - 1, COLS - 1
+dogX, dogY = 6, 0
+goalX, goalY = 6, 19
 catHP = 1.0
 gameOver = False
 
-# สร้างแผนที่เริ่มต้น
-baseMap = [[WALL for _ in range(COLS)] for _ in range(ROWS)]
-
+# แผนที่ที่กำหนดเอง
+predefined_maps = {
+    '1': [
+        "......#......#....#.",
+        "..#.................",
+        ".....#.#.#..........",
+        "...#......# #.......",
+        "......#..#......#...",
+        "#...#.........#.....",
+        ".......#....#......."
+    ],
+    '2': [
+        "#####...............",
+        "#...................",
+        "#..#######..........",
+        "#...........#####...",
+        "#######............#",
+        "...............#####",
+        "...................."
+    ],
+    '3': [
+        "....................",
+        "######..######......",
+        "......##......####..",
+        "..####..........##..",
+        "..##......######....",
+        "......######........",
+        "...................."
+    ]
+}
 
 def print_board():
-    print("\n──── Game Board ────")
+    print("\n---- Game Board ----")
     for i in range(ROWS):
         row = ''
         for j in range(COLS):
@@ -41,36 +69,39 @@ def print_board():
                 row += baseMap[i][j]
             row += ' '
         print(row)
-    print(f"\n🐱 Cat HP: {catHP:.1f}")
+    print(f"\nCat HP: {catHP:.1f}")
 
+def bfs_path_exists(sx, sy, tx, ty, grid):
+    visited = [[False] * COLS for _ in range(ROWS)]
+    queue = deque([(sx, sy)])
+    visited[sx][sy] = True
 
-def generate_map(wall_density=0.25):
+    while queue:
+        x, y = queue.popleft()
+        if (x, y) == (tx, ty):
+            return True
+        for d in range(1, 5):
+            nx, ny = x + dx[d], y + dy[d]
+            if 0 <= nx < ROWS and 0 <= ny < COLS:
+                if not visited[nx][ny] and grid[nx][ny] != WALL:
+                    visited[nx][ny] = True
+                    queue.append((nx, ny))
+    return False
+
+def load_predefined_map(map_id):
     global baseMap
-    baseMap = [[WALL for _ in range(COLS)] for _ in range(ROWS)]
+    raw_map = predefined_maps.get(map_id)
+    if not raw_map:
+        print("Invalid map ID. Using default map 1.")
+        raw_map = predefined_maps['1']
+    baseMap = [list(row) for row in raw_map]
 
-    x, y = catX, catY
-    baseMap[x][y] = EMPTY
-
-    while x != goalX or y != goalY:
-        dir = random.randint(1, 4)
-        nx = max(0, min(x + dx[dir], ROWS - 1))
-        ny = max(0, min(y + dy[dir], COLS - 1))
-
-        if random.choice([True, False]) or \
-           (abs(goalX - x) > abs(goalY - y) and nx != x) or \
-           (abs(goalY - y) >= abs(goalX - x) and ny != y):
-            x, y = nx, ny
-            baseMap[x][y] = EMPTY
-
-    for i in range(ROWS):
-        for j in range(COLS):
-            if (i == catX and j == catY) or (i == goalX and j == goalY):
-                continue
-            if baseMap[i][j] == EMPTY:
-                continue
-            if random.random() > wall_density:
-                baseMap[i][j] = EMPTY
-
+    if not bfs_path_exists(catX, catY, goalX, goalY, baseMap):
+        print("[ERROR] Cat cannot reach the goal in this map.")
+        exit()
+    if not bfs_path_exists(dogX, dogY, goalX, goalY, baseMap):
+        print("[ERROR] Dog cannot reach the goal in this map.")
+        exit()
 
 def move_entity(ex, ey, dir, steps, is_dog):
     global catHP, gameOver
@@ -97,10 +128,10 @@ def move_entity(ex, ey, dir, steps, is_dog):
                 return ex, ey
     return ex, ey
 
-
 # เริ่มเกม
 print("=== Cat vs Dog ===")
-generate_map()
+map_choice = input("Choose map (1 / 2 / 3): ").strip()
+load_predefined_map(map_choice)
 print_board()
 
 while not gameOver:
@@ -113,13 +144,13 @@ while not gameOver:
         print("  Invalid input. Skipping turn.")
 
     if catX == goalX and catY == goalY:
-        print("🏁 Cat reached the goal! Cat wins!")
+        print("Cat reached the goal! Cat wins!")
         break
 
     print_board()
 
     print("\n-- Dog's turn --")
-    ddir = random.randint(1, 4)
+    ddir = int(input("  Direction (1=↑, 2=↓, 3=←, 4=→): "))
     dsteps = random.randint(1, 4)
     print(f"  Dog moves dir={ddir} steps={dsteps}")
     dogX, dogY = move_entity(dogX, dogY, ddir, dsteps, True)
@@ -129,4 +160,3 @@ while not gameOver:
 
     if catHP <= 0:
         break
-

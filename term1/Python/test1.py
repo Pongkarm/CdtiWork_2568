@@ -22,7 +22,7 @@ for x in range(2):
         for z in range(2):
             print(x, y, z)
             print(not(not(x) or (x and y and z)))
-            print(not(not((x or y) and (x and y and z))))
+            print(not((x or y) and (x and y and z)))
 def generator_range(n):
     for i in range(n):
         yield i  # คืนทีละตัว

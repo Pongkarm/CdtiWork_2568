@@ -21,5 +21,4 @@
 import sys
 sys.setrecursionlimit(10000)  # หรือมากกว่านี้ตามที่ต้องการ
 
-a = [4, 6, 7, 9]
-print(a[:])
+print(max(100, 200, 300))
