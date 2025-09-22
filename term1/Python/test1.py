@@ -34,3 +34,7 @@ for num in generator_range(5):
 # 2
 # 3
 # 4
+sum = 0
+for i in range(1, 71):
+    sum += 12*i
+print(sum)

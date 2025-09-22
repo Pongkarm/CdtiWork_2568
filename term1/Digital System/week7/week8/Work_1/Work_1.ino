@@ -1,33 +1,20 @@
-// ข้อที่ 1
+// กำหนดขาที่ต่อ LED
+int ledPins[] = {13, 12, 11};  
+int ledCount = 3; // จำนวน LED
+
 void setup() {
-  // put your setup code here, to run once:
-  pinMode(11, OUTPUT);
+  // ตั้งค่า pin ทั้งหมดเป็น OUTPUT
+  for (int i = 0; i < ledCount; i++) {
+    pinMode(ledPins[i], OUTPUT);
+  }
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  digitalWrite(11, HIGH);
-  delay(200);
-  digitalWrite(11, LOW);
-  delay(200);
-}
-
-
-//ข้อที่2
-int s1 = 4; 
-int LED = 13;
-
-void setup() {
-  // Initialize button and LED pins
-  pinMode(s1, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
-}
-
-void loop() {
-  // Read the button state
-  if (digitalRead(s1) == HIGH) {
-    digitalWrite(LED, HIGH);  // Turn on LED when button is pressed
-  } else {
-    digitalWrite(LED, LOW);   // Turn off LED when button is not pressed
+  // วนให้ LED ติดทีละดวง
+  for (int i = 0; i < ledCount; i++) {
+    digitalWrite(ledPins[i], HIGH); // ติด
+    delay(200);                     // รอ 0.5 วินาที
+    digitalWrite(ledPins[i], LOW);  // ดับ
+    delay(200);                     // รอ 0.5 วินาที
   }
 }
